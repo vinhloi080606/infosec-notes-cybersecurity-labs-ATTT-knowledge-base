@@ -1,4 +1,12 @@
 # ly thuyết cơ bản về IPv4
+# lịch sử IPv4
+    - ban đầu IPv4 có 5 lớp (A, B, C, D, E) chỉ có A, B, C phân phát cho thiết bị-> 1 lớp phân cách cố định     
+        - lớp A có 8 bit đầu cố định còn lại phân phát =/8 -> chia đến 2^24 địa chỉ host. Dấu hiệu 1-126 ở octet đầu ví dụ (10.xx.xx.xx)
+        - lớp B có 16 bit -> /16 còn 2^16 địa chỉ host. dấu hiệu octet đầu từ 128-191 ví dụ (130.xx.xx.xx)
+        - lớp c có 24 bit-> /24-> còn 2^8 địa chỉ host. dấu hiệu octet đầu từ 192-223 ví dụ (200.xx.xx.xx)
+        - lớp D đi từ 224-239 dùng cho Multicast
+        - Lớp E đi từ 240-255 dùng cho nghiên cứu, không cấp cho máy tính
+        -->> hạn chế nếu cần cấp cho số lượng máy vừa vượt 2^8 vài bit thì cũng cần xin lên lớp B lãng phí 1 lượng lớn địa chỉ IP -> bị khai trừ và thay thế bởi    CIDR chia một cách tự do 
 ## IPv4 là gì?
     - IP là giao thức - địa chỉ nhà -> các thiết bị có kết nói internet kết nối nhận diện và giao tiếp với nhau
     - nhận biết cách gói tin di chuyển, cách rà quét mạng, giả mạo địa chỉ, quy tắc tường lửa
@@ -41,6 +49,40 @@
                 - subnet 3: từ 192.168.1.128 đến 192.168.1.191
                 - subnet 4: từ 192.168.1.192 đến 192.168.1.255
                 -> lưu ý các IP đầu và cuối mỗi subnet sẽ không thể kết nối cho máy tính vì nó là Network ID và Broadcast IP
-        
+# IP private
+    - là địa chỉ được dùng trong mạng LAN ( mạng nội bộ) 
+        - đặc điểm
+            - miễn phí, tự do cấp phát
+            - các công ty khác nhau có thể trung IP này
+            - không thể truy cập từ bên ngoài
+        - ba dãy tiêu chuẩn
+            - A: 10.0.0.0 - 10.255.255.255 - cấp phát nhiều
+            - B: 172.16.0.0 - 172.16.255.255 - cấp phát cho trung
+            - C: 192.168.0.0 - 192.168.255.255 - cấp phát hộ gia đình và kinh doanh nhỏ
+# IP public 
+    - là địa chỉ duy nhất dùng trên toàn cầu -> giao tiếp trên môi trường internet
+        - đặc điểm
+            - là độc nhất 
+            - thuê/ mua từ các nhà cung cấp mạng ( viettel, vina,...)
+            - bất kể ai dùng internet cũng có thể thấy
+# 3 dải private tiêu chuẩn do tổ chức IANA quy định
+    - dãy A: từ 10.0.0.0- 10.255.255.255 -> hơn 16.7 triệu IP thường được các tập đoàn đa quốc gia sử dụng ( AWS, gg cloud) hoặc tổ chức giáo dục lớp
+    - dãy B: từ 172.16.0.0 - 172.31.255.255-> hơn 1 triệu IP doanh nghiệp tầm trung, hệ thống ảo, Docker container.
+    - dãy C: từ 192.168.0.0 -   192.168.255.255-> khoảng 65.536 thường chia nhỏ thành /24 -> wiffi gia đình, cafe, các cửa hàng bán lẻ.
+    -->> nếu thấy dãy bắt đầu bằng IP 192.168.xx.xx tấn công -> kẻ tấn công ngồi trong hệ thống hoặc mã độc. còn bắt đầu bằng 10.xx.xx.xx khả năng cao muốn giả mạo thành " người nhà"
+
+
+# Nat
+    - vấn đề là nếu IP Private mà muốn xem YTB nơi IP Public thì như nào?
+    - kỹ thuật NAT với cục router là tiếp tân
+        - quy trình
+            - 1: máy tính gửi yêu cầu đến router
+            - 2: yêu cầu từ máy tính đến router, router có 1 IP public
+            - 3: router giấu IP private của bạn đi sài IP public của nó gửi yêu cầu đến YTB
+            - 4: YTB gửi video về IP public của router, router chuyển về cho IP private
+            - lưu ý: khi nhiều người cùng gửi nếu không có kiểm soát sẽ rất loạn nên khi gửi sẽ có 1 cái gọi là PAT để đánh dấu IP nào đưa ra yêu cầu gì.
+        -->> người bên ngoài cùng lắm chỉ mò ra được IP public cảu router -> tưởng lửa thô sơ đầu tiên
+        -->> tiết kiệm chi phí, 1 router 1 IP public gánh hàng ngang IP private
+
 
  
