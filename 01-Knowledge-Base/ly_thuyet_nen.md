@@ -83,6 +83,30 @@
             - lưu ý: khi nhiều người cùng gửi nếu không có kiểm soát sẽ rất loạn nên khi gửi sẽ có 1 cái gọi là PAT để đánh dấu IP nào đưa ra yêu cầu gì.
         -->> người bên ngoài cùng lắm chỉ mò ra được IP public cảu router -> tưởng lửa thô sơ đầu tiên
         -->> tiết kiệm chi phí, 1 router 1 IP public gánh hàng ngang IP private
-
+# MAC
+    - địa chỉ vật lý - đoạn mã duy nhất được khắc vào card mạng ( NIC - Network Interface Card) trên thiết bị ngay tại xưởng
+    - so sánh với IP: IP có thể thay đổi tùy vào nơi bạn ở, còn MAC luôn là 1 dãy số đó dù bạn đi đâu
+    - MAC có 48 bit, dài hơn so với IPv4 bình thường - viết dưới dạng thập lục phân gồm 6 cặp chữ/số, cách nhau bằng : hoặc - 
+        - Ví dụ: 00:1A:2B:3C:4D:5E hoặc 00-1A-2B-3C-4D-5E
+        - 24 bit đầu: là mã nhà sản xuất: 00:1A:2B mã này thuộc cố định 1 nhà sản xuất
+        - 24 bit sau: là mã mà nhà sản xuất gán vào 1 con chip: 3C:4D:5E thuộc một con card mạng cố định
+    - lý do có IP mà còn có MAC.
+        - MAC không có tính định tuyến: 
+            - IP: xuyên các router các quốc gia để lấy địa chỉ, về tới router nhà thì dùng MAC để kiếm thiết bị nào kiếm cái nào bằng cách sài giao thức ARP hỏi IP này có MAC là gì sau đó bọc gói tin và bắn vào máy tính 
+    - cẩn thận với MAC, mặc dù nó là khắc cứng vào card nhưng cũng cần đọc bằng hệ điều hành, hacker có thể dùng phần mền đổi địa chỉ MAC khi đọc
+        - dẫn đến việc rình xem MAC của người được truy cập là gì và tạo MAC máy tính giống hệt để truy cập trái phép
+        - tự động tạo MAC giả liên tục để có thể lách các bảo mật như thời gian dùng Wiffi ở sân bay
+# ARP
+    - là giao thức phân giải địa chỉ ( kẻ phiên dịch ), ánh xạ 1 địa chỉ IP sang địa chỉ MAC tương ứng trong cùng 1 LAN. Lý do là vì cần có địa chỉ MAC mới biết đến chính xác máy nào nếu chỉ có IP thì chỉ về tới router.
+    - cơ chế hoạt động: với ví dụ máy IP (192.168.1.5) muốn ra internet bằng router (192.168.1.1)
+        - bước 1: máy 192.168.1.5 sẽ tự tra cứu ARP cache để xem có lưu router chưa 
+        - bước 2: nếu chưa có sẽ phát về broadcast để lấy địa chỉ MAC của 192.168.1.1
+        - bước 3: router nhận thông tin từ broadcast chung đó và chuyền lại địa chỉ mac cho máy 192.168.1.5, máy nhận và lưu lại cho lần dùng sao
+    - lỗ hỏng bảo mật 
+        - do ARP đã ra đời khá lâu nên nó ngây thơ, không có xác thức lại
+            - luôn tin tưởng mọi ARP reply mà các thiết bị nhận được kể cả chưa gửi câu hỏi
+            - từ đó các hacker có thể gửi các ARP giả khi nằm chung mạng với chúng ta-> các thông tin ta muốn truyền ra ngoài bị hacker đọc trước và có thể bị chỉnh sửa
+    - lệch kiểm tra ARP: cmd-> arp -a.
+    
 
  
